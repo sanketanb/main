@@ -68,5 +68,14 @@ class User(models.Model):
     created_at = models.DateTimeField(auto_now_add = True)
     updated_at = models.DateTimeField(auto_now = True)
     objects = UserManager()
-    # def __str__(self):
-    #     return "<User object: {} {} {}>".format(self.firstname, self.lastname, self.email, self.password)
+    def __str__(self):
+        return "<User object: {} {} {}>".format(self.firstname, self.lastname, self.email, self.password)
+
+class Quote(models.Model):
+    desc = models.TextField()
+    # this is my posted_by or author
+    author = models.ForeignKey(User, related_name="quotes")
+    liked_by = models.ManyToManyField(User, related_name="likes")
+    created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return "<User object: {}>".format(self.desc)

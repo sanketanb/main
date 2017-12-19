@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        {% load static %}
+        <!-- The line above tells Django to be ready to listen for static files -->
+        <link rel="stylesheet" href="{% static 'login_registration/css/main.css' %}" media="screen" title="no title" charset="utf-8">
+        <!-- Put the static files in the static folder inside your app.  Django collects files within all static folders and puts them within a single folder -->
+    </head>
+
+    <body>
+        <h2>Dash! Welcome, {{user.firstname}}</h2>
+        {% if messages %}
+        <ul class="green">
+            {% for message in messages %}
+            {{ message }}
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <a href="{% url 'lr:logout' %}"><button>Logout</button></a>
+        <h3>Quotable Quotes</h3>
+        {% for quote in quotes_display %}
+        <div class="display">
+            <p>{{ quote.desc }}</p>
+            <p>Posted by {{user.firstname}} </p>
+            <button>Add to my list</button>
+        </div>
+        {% endfor %}
+        <h3>Your Favorites</h3>
+        <h3>Contribute to a quote:</h3>
+        <form action="{% url 'lr:contribute' %}" method='post'>
+            {% csrf_token %}
+            Quoted by:
+            <br>
+            <input type="text" name="first_name" value={{user.firstname}}>
+            <br> Message:
+            <br>
+            <textarea rows="4" cols="18" type="text" name="desc" value=""></textarea>
+            <br>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
+    </body>
+</html>

@@ -10,14 +10,32 @@
     </head>
 
     <body>
-        <h1>Success! Welcome, {{user.firstname}}</h1>
         {% if messages %}
-        <ul class="green">
+        <ul class="messages">
             {% for message in messages %}
-            {{ message }}
+            <li class="red">{{ message }}</li>
             {% endfor %}
         </ul>
         {% endif %}
-        <a href="{% url 'lr:logout' %}"><button>Logout</button></a>
+        
+        <h2>Dashboard</h2>
+        <h2>Welcome, !</h2>
+        <h3>Quotable Quotes</h3>
+
+        <h3>Your Favorites</h3>
+        
+        <p>Contribute to a quote:</p>
+        <form action="{% url 'lr:' %}" method='post'>
+            {% csrf_token %}
+            Quoted_by:
+            <br>
+            <input type="text" name="first_name" value="">
+            <br> Message:
+            <br>
+            <input type="text" name="desc" value="">
+            <br>
+            <br>
+            <input type="submit" value="Submit">
+        </form>
     </body>
 </html>
