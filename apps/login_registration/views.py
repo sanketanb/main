@@ -10,10 +10,13 @@ def index(request):
 
 def quotes(request):
     try:
+        me = User.objects.get(id=request.session['user_id'])
         context = {
             'user': User.objects.get(id=request.session['user_id']),
-            'quotes_display': Quote.objects.all()
+            'quotes_display': Quote.objects.filter().exclude(id__in=me.likes.all()),
+            'favs_display':User.objects.get(id=request.session['user_id']).likes.all()
         }
+        
         return render(request,"login_registration/quotes.html", context)
     except:
         return redirect(reverse('lr:index'))
@@ -53,10 +56,18 @@ def contribute(request):
         print("in contri")  
         desc= request.POST["desc"]  
         c=request.session['user_id']
-        
         Quote.objects.create(desc=desc, author=User.objects.get(id=c))
         return redirect(reverse('lr:quotes'))       
     return redirect(reverse('lr:quotes'))
 
-def fav(request):
-    return redirect(reverse('lr:index')) 
+def fav(request, id):
+    this_quote = Quote.objects.get(id=id)
+    this_user = User.objects.get(id=request.session['user_id'])
+    this_quote.liked_by.add(this_user)
+    return redirect(reverse('lr:quotes')) 
+
+def fav_remove(request, id):
+    this_quote = Quote.objects.get(id=id)
+    this_user = User.objects.get(id=request.session['user_id'])
+    this_quote.liked_by.remove(this_user)
+    return redirect(reverse('lr:quotes')) 

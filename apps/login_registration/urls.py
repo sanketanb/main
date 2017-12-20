@@ -7,5 +7,6 @@ urlpatterns = [
     url(r'^quotes$', views.quotes, name='quotes'),
     url(r'^logout$', views.logout, name='logout'),
     url(r'^contribute$', views.contribute, name='contribute'),
-    url(r'^fav$', views.fav, name='fav')
+    url(r'^(?P<id>\d+)/fav$', views.fav, name='fav'),
+    url(r'^(?P<id>\d+)/fav_remove$', views.fav_remove, name='fav_remove')
 ]
